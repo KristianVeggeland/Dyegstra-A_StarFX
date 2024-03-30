@@ -1,5 +1,6 @@
 package org.example.superfastline.container;
 
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -7,6 +8,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import org.example.superfastline.container.Walls.ClosedBox;
+import org.example.superfastline.container.Walls.OpenBox;
+import org.example.superfastline.container.Walls.Wall;
 
 public class Map extends Pane {
 
@@ -14,7 +18,7 @@ public class Map extends Pane {
         private int size;
 
         double innerS;
-        private Rectangle[][] map;
+        private Wall[][] map;
 
         public Map(int size) {
             if (size  == 0) return;
@@ -23,27 +27,41 @@ public class Map extends Pane {
         }
 
         private void init() {
-            map = new Rectangle[size-1][size-1];
-
-            for (int row = 0; row < Math.sqrt(size); row++) {
-                for (int col = 0; col < Math.sqrt(size); col++) {
-                    Rectangle innerBox = new Rectangle(col * innerS, row * innerS, innerS, innerS);
-                    innerBox.setFill(Color.TRANSPARENT);
-                    innerBox.setStroke(Color.BLUE);
-                    this.getChildren().add(innerBox);
-
-                    // Create dot
-                    double dotSize = innerS / 5;
-                    Circle dot = new Circle(col * innerS + innerS / 2, row *   innerS + innerS / 2, dotSize / 2, Color.RED);
-                    this.getChildren().add(dot);
-                }
-            }
+            map = new Wall[size-1][size-1];
+            this.setStyle("-fx-border-color: black");
+            setInnerSize();
+            generateMap();
         }
 
         private void setInnerSize() {
             BoxContainer boxContainer = (BoxContainer) this.getParent();
-            innerS = 20;
+            innerS =  40;
+        }
 
 
+        private int randomNumb() {
+            return (int) (Math.random() * 10);
+        }
+
+        private void generateMap()  {
+            for (int row = 0; row  < map.length; row++) {
+                for (int col = 0; col < map.length; col++) {
+                    boolean isEdge = isEdge(row, col);
+                    if (isEdge) {
+                        map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS);
+                    }
+                   else if (randomNumb() > 7) {
+                        map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS);
+                    } else {
+                        map[row][col] = new OpenBox(innerS, row*innerS, col*innerS);
+                        double dotSize = innerS / 5;
+                    }
+                    this.getChildren().add(map[row][col]);
+                }
+            }
+        }
+
+        private boolean isEdge(int row, int col) {
+            return row == 0 || col == 0 || row == map.length -1  || col == map.length-1 ;
         }
 }
