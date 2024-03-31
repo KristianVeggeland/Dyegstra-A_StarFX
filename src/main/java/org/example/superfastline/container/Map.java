@@ -12,17 +12,19 @@ import org.example.superfastline.container.Walls.ClosedBox;
 import org.example.superfastline.container.Walls.OpenBox;
 import org.example.superfastline.container.Walls.Wall;
 
+import java.util.Random;
+
 public class Map extends Pane {
-
-
+         private BoxContainer parent ;
         private int size;
-
+        private Circle startCircle, endCircle;
         double innerS;
         private Wall[][] map;
 
-        public Map(int size) {
+        public Map(int size, BoxContainer parent) {
             if (size  == 0) return;
             this.size = size;
+            this.parent = parent;
             init();
         }
 
@@ -31,16 +33,45 @@ public class Map extends Pane {
             this.setStyle("-fx-border-color: black");
             setInnerSize();
             generateMap();
+            randomStartAndEndPoint(); 
         }
 
         private void setInnerSize() {
-            BoxContainer boxContainer = (BoxContainer) this.getParent();
-            innerS =  40;
+            BoxContainer boxContainer = ((BoxContainer) this.getParent());
+            if (parent == null) System.out.println("Parent is null");
+            innerS =  (double) ApplicationBox.WIDTH /size;
         }
-
 
         private int randomNumb() {
             return (int) (Math.random() * 10);
+        }
+
+        private void randomStartAndEndPoint () {
+             Random random = new Random();
+                    int startRow, startCol;
+                    do {
+                        startRow = random.nextInt((int) Math.sqrt(innerS *size) - 2) + 1;
+                        startCol = random.nextInt((int) Math.sqrt(innerS * size) - 2) + 1;
+                    } while (isEdge(startRow, startCol));
+                    double startX = (startCol * innerS) + (innerS / 2);
+                    double startY = (startRow * innerS) + (innerS / 2);
+
+                    // Generate random end circle coordinates not at the edges
+                    int endRow, endCol;
+                    do {
+                        endRow = random.nextInt((int) Math.sqrt(innerS*size) - 2) + 1;
+                        endCol = random.nextInt((int) Math.sqrt(innerS*size) - 2) + 1;
+                    } while (isEdge(endRow, endCol) || (endRow == 0 && endCol == 0));
+                    double endX = (endCol *innerS)  + innerS / 2;
+                    double endY = (endRow * innerS) + (innerS / 2);
+
+                    // Create start circle (green)
+                    startCircle = new Circle(startX, startY, innerS / 4, Color.GREEN);
+                    this.getChildren().add(startCircle);
+
+                    // Create end circle (red)
+                    endCircle = new Circle(endX, endY, innerS / 4, Color.RED);
+                    this.getChildren().add(endCircle);
         }
 
         private void generateMap()  {
@@ -50,11 +81,10 @@ public class Map extends Pane {
                     if (isEdge) {
                         map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS);
                     }
-                   else if (randomNumb() > 7) {
+                   else if (randomNumb() > 8) {
                         map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS);
                     } else {
                         map[row][col] = new OpenBox(innerS, row*innerS, col*innerS);
-                        double dotSize = innerS / 5;
                     }
                     this.getChildren().add(map[row][col]);
                 }
@@ -63,5 +93,29 @@ public class Map extends Pane {
 
         private boolean isEdge(int row, int col) {
             return row == 0 || col == 0 || row == map.length -1  || col == map.length-1 ;
+        }
+
+        public Wall[][] getWalls() {
+            return map;
+        }
+
+        public double getInnerSize() {
+            return innerS;
+        }
+
+        public double getStartCircleX() {
+            return startCircle.getCenterX();
+        }
+
+        public double getStartCircleY() {
+            return startCircle.getCenterY();
+        }
+
+        public double getEndCircleX() {
+            return endCircle.getCenterX();
+        }
+
+        public double getEndCircleY() {
+            return endCircle.getCenterY();
         }
 }

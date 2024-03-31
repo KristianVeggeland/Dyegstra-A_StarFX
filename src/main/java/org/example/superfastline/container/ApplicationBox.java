@@ -11,7 +11,7 @@ public class ApplicationBox extends BorderPane {
 
     static final Label title = new Label("Super Fast Line");
     static final int HEIGHT = 800;
-    static final int WIDTH = 600;
+    static final int WIDTH = 800;
 
     final Landing landing = new Landing();
 
@@ -24,12 +24,10 @@ public class ApplicationBox extends BorderPane {
         this.setPrefSize(WIDTH, HEIGHT);
         this.setTop(title);
         //this.setCenter(landing);
-        this.setCenter(new BoxContainer(AlgoType.A_STAR, 8));
+        this.setCenter(new BoxContainer(AlgoType.A_STAR, 30));
     }
 
     public void flush() {
         this.setCenter(null);
     }
-
-
 }
