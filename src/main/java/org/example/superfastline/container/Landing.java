@@ -14,8 +14,8 @@ public class Landing extends VBox {
     static final Label size = new Label("Select size: ");
 
 
-    TextField heightField = new TextField("Height: ");
-    TextField widthField = new TextField("Width: ");
+    TextField sizeField = new TextField("");
+
     private RadioButton deegButton = new RadioButton("Dyegstra");
     private RadioButton aStarButton = new RadioButton("A*");
 
@@ -47,7 +47,7 @@ public class Landing extends VBox {
         this.getChildren().add(size);
 
         HBox sizeBox = new HBox();
-        sizeBox.getChildren().addAll(heightField, widthField);
+        sizeBox.getChildren().addAll(sizeField);
         this.getChildren().add(sizeBox);
 
         Button startButton = new Button("Start");
@@ -62,10 +62,9 @@ public class Landing extends VBox {
     }
 
     private void onStart() {
-        if (this.getParent() != null) {
-            ApplicationBox parent = (ApplicationBox) this.getParent();
-            parent.setCenter(new Pane());
-        }
+        ApplicationBox parent = (ApplicationBox) this.getParent();
+        parent.flush();
+        parent.setCenter(new BoxContainer(algoType, Integer.parseInt(sizeField.getText())));
     }
 
 }

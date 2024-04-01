@@ -45,17 +45,16 @@ public class BoxContainer extends BorderPane {
         if (algoType == AlgoType.DYKSTRA) {
             title.setText("Dyekstra");
             drawing = new DeegDrawing(this.map);
-            drawing.draw();
         } else {
             title.setText("A*");
         }
         this.setCenter(map);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2.0), event -> {
-            if (isRunning) {
+      //     if (isRunning) {
                 if (!pointReached) {
                     refresh();
                 }
-            }
+        //   }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -67,6 +66,7 @@ public class BoxContainer extends BorderPane {
 
     private void refresh() {
         System.out.println("Refresh");
+        drawing = new DeegDrawing(this.map);
         this.setCenter(null);
         this.setCenter(map);
     }
@@ -75,4 +75,7 @@ public class BoxContainer extends BorderPane {
         return ApplicationBox.WIDTH ;
     }
 
+    public void setPointReached(boolean pointReached) {
+        this.pointReached = pointReached;
+    }
 }

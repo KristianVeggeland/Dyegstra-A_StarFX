@@ -1,46 +1,127 @@
 package org.example.superfastline.logic;
 
-import javafx.scene.shape.Line;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+import org.example.superfastline.container.BoxContainer;
 import org.example.superfastline.container.Map;
 import org.example.superfastline.container.Walls.Box;
+import org.example.superfastline.container.Walls.ClosedBox;
+import org.example.superfastline.logic.Drawing;
 
-public class DeegDrawing  implements Drawing {
-    boolean pointReached = false;
-    Map map;
-    Box[][] mapGrid;
-    double innerS;
-    private double startPointX, startPointY, endPointX, endPointY;
-    private int startPosX, startPosY;
+import java.util.*;
+
+public class DeegDrawing implements Drawing {
+
+    private Map map;
+    private Box[][] mapGrid;
+    private int startPointX, startPointY, endPointX, endPointY;
+    private HashMap<Box, List<Box>> allPaths = new HashMap<>();
+    private List<Box> successfulPath = new ArrayList<>();
 
     public DeegDrawing(Map map) {
         super();
         this.map = map;
         this.mapGrid = map.getWalls();
-        this.innerS = map.getInnerSize();
-        this.startPointX = map.getStartCircleX();
-        this.startPointY = map.getStartCircleY();
-        this.endPointX = map.getEndCircleX();
-        this.endPointY = map.getEndCircleY();
+        this.startPointX = map.getStartPosX();
+        this.startPointY = map.getStartPosY();
+        this.endPointX = map.getEndPosX();
+        this.endPointY = map.getEndPosY();
         draw();
     }
 
     @Override
     public void draw() {
-        double a = 100;
-        double b = 200;
-        while (!pointReached) {
-            System.out.println(map == null);
-            Line line = new Line(10, 10,a, b);
-            map.getChildren().add(line);
-            a += 100;
+        System.out.println("Starting Dijkstra's algorithm...");
+        findShortestPath();
+        visualizePath();
+    }
+
+    private void findShortestPath() {
+        // Initialize all boxes as unvisited
+        for (int i = 0; i < mapGrid.length; i++) {
+            for (int j = 0; j < mapGrid[i].length; j++) {
+                mapGrid[i][j].setVisited(false);
+            }
+        }
+
+        // Initialize queue for BFS
+        Queue<Box> queue = new LinkedList<>();
+        Box startBox = mapGrid[startPointX][startPointY]; // Corrected order for start point
+        startBox.setVisited(true);
+        queue.add(startBox);
+        List<Box> initialPath = new ArrayList<>();
+        initialPath.add(startBox);
+        allPaths.put(startBox, initialPath);
+
+        while (!queue.isEmpty()) {
+            Box current = queue.poll();
+            int x = current.getRow();
+            int y = current.getCol();
+
+            // Check if we've reached the end point
+            if (x == endPointX && y == endPointY) {
+                System.out.println("Reached end point: (" + x + ", " + y + ")");
+                reconstructSuccessfulPath(current);
+                BoxContainer pointReached = (BoxContainer) map.getParent();
+                pointReached.setPointReached(true);
+                break;
+            }
+
+            // Check neighbors
+            List<Box> neighbors = getNeighbors(current);
+            for (Box neighbor : neighbors) {
+                if (!neighbor.isVisited()) {
+                    neighbor.setFill(Color.YELLOW);
+                    neighbor.setVisited(true);
+                    neighbor.setPrevious(current);
+                    queue.add(neighbor);
+                    List<Box> path = new ArrayList<>(allPaths.getOrDefault(current, new ArrayList<>()));
+                    path.add(neighbor);
+                    allPaths.put(neighbor, path);
+                }
+            }
         }
     }
 
-    private void checkNeighbourBox() {
-
+    private void reconstructSuccessfulPath(Box current) {
+        successfulPath = allPaths.get(current);
+        System.out.println("Successful path: " + successfulPath);
     }
+
+    private List<Box> getNeighbors(Box current) {
+        List<Box> neighbors = new ArrayList<>();
+        int x = current.getCol();
+        int y = current.getRow();
+
+        // Check if the neighboring boxes are within bounds and are not walls
+        if (x - 1 >= 0 && !(mapGrid[y][x - 1] instanceof ClosedBox)) {
+            neighbors.add(mapGrid[y][x - 1]); // Left
+        }
+        if (x + 1 < mapGrid[0].length && !(mapGrid[y][x + 1] instanceof ClosedBox)) {
+            neighbors.add(mapGrid[y][x + 1]); // Right
+        }
+        if (y - 1 >= 0 && !(mapGrid[y - 1][x] instanceof ClosedBox)) {
+            neighbors.add(mapGrid[y - 1][x]); // Up
+        }
+        if (y + 1 < mapGrid.length && !(mapGrid[y + 1][x] instanceof ClosedBox)) {
+            neighbors.add(mapGrid[y + 1][x]); // Down
+        }
+        return neighbors;
+    }
+    private void visualizePath() {
+        int n = 0;
+        // Color the boxes belonging to the successful path in green
+        for (Box box : successfulPath) {
+            System.out.println("box: " + n +" contxains: "  + box.toString());
+            box.setFill(Color.GREEN);
+            n++;
+        }
+    }
+
     @Override
     public void erase() {
-
+        // No need to implement anything here
     }
 }

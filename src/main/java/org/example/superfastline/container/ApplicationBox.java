@@ -23,8 +23,8 @@ public class ApplicationBox extends BorderPane {
     private void init() {
         this.setPrefSize(WIDTH, HEIGHT);
         this.setTop(title);
-        //this.setCenter(landing);
-        this.setCenter(new BoxContainer(AlgoType.A_STAR, 20));
+        this.setCenter(landing);
+        //this.setCenter(new BoxContainer(AlgoType.A_STAR, 100));
     }
 
     public void flush() {

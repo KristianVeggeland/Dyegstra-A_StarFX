@@ -67,11 +67,11 @@ public class Map extends Pane {
             double endY = (endRow * innerS) + (innerS / 2);
 
             // Create start circle (green)
-            startCircle = new Circle(startX, startY, innerS / 4, Color.GREEN);
+            startCircle = new Circle(startY, startX, innerS / 4, Color.BLUE);
             this.getChildren().add(startCircle);
 
             // Create end circle (red)
-            endCircle = new Circle(endX, endY, innerS / 4, Color.RED);
+            endCircle = new Circle(endY, endX, innerS / 4, Color.RED);
             this.getChildren().add(endCircle);
         }
 
@@ -80,12 +80,12 @@ public class Map extends Pane {
                 for (int col = 0; col < map.length; col++) {
                     boolean isEdge = isEdge(row, col);
                     if (isEdge) {
-                        map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS);
+                        map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS, row, col);
                     }
                    else if (randomNumb() > 8) {
-                        map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS);
+                        map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS, row, col);
                     } else {
-                        map[row][col] = new OpenBox(innerS, row*innerS, col*innerS);
+                        map[row][col] = new OpenBox(innerS, row*innerS, col*innerS, row, col);
                     }
                     this.getChildren().add(map[row][col]);
                 }
@@ -109,16 +109,20 @@ public class Map extends Pane {
         public double getInnerSize() {
             return innerS;
         }
-        public double getStartCircleX() {
-            return startCircle.getCenterX();
+
+        public int getStartPosX() {
+            return startPosX;
         }
-        public double getStartCircleY() {
-            return startCircle.getCenterY();
+
+        public int getStartPosY() {
+            return startPosY;
         }
-        public double getEndCircleX() {
-            return endCircle.getCenterX();
+
+        public int getEndPosX() {
+            return endPosX;
         }
-        public double getEndCircleY() {
-            return endCircle.getCenterY();
+
+        public int getEndPosY() {
+            return endPosY;
         }
 }
