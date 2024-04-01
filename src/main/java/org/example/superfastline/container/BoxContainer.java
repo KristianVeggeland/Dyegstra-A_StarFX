@@ -45,6 +45,7 @@ public class BoxContainer extends BorderPane {
         if (algoType == AlgoType.DYKSTRA) {
             title.setText("Dyekstra");
             drawing = new DeegDrawing(this.map);
+            drawing.draw();
         } else {
             title.setText("A*");
         }

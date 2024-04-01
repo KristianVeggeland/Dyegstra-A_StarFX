@@ -1,39 +1,42 @@
 package org.example.superfastline.logic;
 
-import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
-import javafx.animation.ParallelTransition;
-import javafx.animation.TranslateTransition;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
+import javafx.scene.shape.Line;
 import org.example.superfastline.container.Map;
-import org.example.superfastline.container.Walls.Wall;
-import org.example.superfastline.logic.Drawing;
+import org.example.superfastline.container.Walls.Box;
 
 public class DeegDrawing  implements Drawing {
-
     boolean pointReached = false;
-
     Map map;
-    Wall[][] mapGrid;
-
+    Box[][] mapGrid;
     double innerS;
+    private double startPointX, startPointY, endPointX, endPointY;
+    private int startPosX, startPosY;
 
-    double startX, startY, endX, endY;
     public DeegDrawing(Map map) {
         super();
         this.map = map;
         this.mapGrid = map.getWalls();
         this.innerS = map.getInnerSize();
-        this.startX = map.getStartCircleX();
-        this.startY = map.getStartCircleY();
-        this.endX = map.getEndCircleX();
-        this.endY = map.getEndCircleY();
+        this.startPointX = map.getStartCircleX();
+        this.startPointY = map.getStartCircleY();
+        this.endPointX = map.getEndCircleX();
+        this.endPointY = map.getEndCircleY();
+        draw();
     }
 
     @Override
     public void draw() {
+        double a = 100;
+        double b = 200;
+        while (!pointReached) {
+            System.out.println(map == null);
+            Line line = new Line(10, 10,a, b);
+            map.getChildren().add(line);
+            a += 100;
+        }
+    }
+
+    private void checkNeighbourBox() {
 
     }
     @Override
