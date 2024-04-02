@@ -54,7 +54,7 @@ public class Landing extends VBox {
 
 
     public void clean() {
-        this.getChildren().clear();
+        sizeField.setText("");
     }
 
     private void onStart() {
@@ -72,7 +72,7 @@ public class Landing extends VBox {
             return;
         }
         parent.setBoxContainer(new BoxContainer(algoType, Integer.parseInt(sizeField.getText())));
-        //clean();
+        clean();
     }
 
 }

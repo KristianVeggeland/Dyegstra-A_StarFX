@@ -41,4 +41,8 @@ public class ApplicationBox extends BorderPane {
     public void flush() {
         this.setCenter(null);
     }
+
+    public void goToLanding() {
+        this.setCenter(landing);
+    }
 }

@@ -136,6 +136,6 @@ public class DeegDrawing implements Drawing {
 
     @Override
     public void erase() {
-        // No need to implement anything here
+
     }
 }

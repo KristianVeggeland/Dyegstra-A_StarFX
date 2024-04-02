@@ -49,8 +49,15 @@ public class BoxContainer extends BorderPane {
         start.setOnAction(e -> {
             startAlgo();
         });
+        back.setOnAction(e -> {
+            isRunning = false;
+            pointReached = false;
+            ApplicationBox parent = (ApplicationBox) this.getParent();
+            parent.goToLanding();
+        });
         titleBox.getChildren().add(title);
         titleBox.getChildren().add(start);
+        titleBox.getChildren().add(back);
         this.setTop(titleBox);
         this.map = new Map(mapSize, this);
         if (algoType == AlgoType.DYKSTRA) {
@@ -106,6 +113,5 @@ public class BoxContainer extends BorderPane {
         facts.getChildren().add(stepsOfBestPath);
         setRight(facts);
     }
-
 
 }
