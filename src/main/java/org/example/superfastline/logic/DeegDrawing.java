@@ -74,7 +74,9 @@ public class DeegDrawing implements Drawing {
             if (x == endPointX && y == endPointY) {
                 System.out.println("Reached end point: (" + x + ", " + y + ")");
                 reconstructSuccessfulPath(current);
-                System.out.println("Boxes visited: " + boxesVisited);
+                //System.out.println("Boxes visited: " + boxesVisited);
+                boxContainer.setSteps(boxesVisited);
+                boxContainer.updateFacts();
                 boxContainer.setPointReached(true);
                 break;
             }
@@ -97,6 +99,7 @@ public class DeegDrawing implements Drawing {
 
     private void reconstructSuccessfulPath(Box current) {
         successfulPath = allPaths.get(current);
+        boxContainer.setStepsOfBestPath(successfulPath.size() - 1);
         System.out.println("Successful path: " + successfulPath);
     }
 

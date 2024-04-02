@@ -12,8 +12,7 @@ public class Landing extends VBox {
     TextField sizeField = new TextField("");
     private RadioButton deegButton = new RadioButton("Dijkstra");
     private RadioButton aStarButton = new RadioButton("A*");
-    private AlgoType algoType;
-
+    private AlgoType algoType = AlgoType.DYKSTRA;
     ApplicationBox parent;
 
     public Landing(ApplicationBox parent) {
@@ -60,6 +59,18 @@ public class Landing extends VBox {
 
     private void onStart() {
         parent.flush();
+        if (sizeField.getText().isEmpty()) {
+            sizeField.setText("give size");
+            return;
+        }
+        if (Integer.parseInt(sizeField.getText()) == 0) {
+            sizeField.setText("give size > 0");
+            return;
+        }
+        if (sizeField.getText().matches("[a-zA-Z]+")) {
+            sizeField.setText("give number");
+            return;
+        }
         parent.setBoxContainer(new BoxContainer(algoType, Integer.parseInt(sizeField.getText())));
         //clean();
     }

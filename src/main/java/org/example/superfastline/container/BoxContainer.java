@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.superfastline.logic.AlgoType;
 import org.example.superfastline.logic.DeegDrawing;
@@ -25,6 +26,11 @@ public class BoxContainer extends BorderPane {
     boolean pointReached = false;
     boolean isRunning = false;
 
+    Label steps = new Label("Steps: ");
+    Label stepsOfBestPath = new Label("Steps of best path: ");
+    VBox facts = new VBox();
+
+
     public BoxContainer(AlgoType a, int mS) {
         if(a == null) return;
         algoType = a;
@@ -36,6 +42,10 @@ public class BoxContainer extends BorderPane {
         this.setWidth(750);
         this.setHeight(750);
         HBox titleBox = new HBox();
+        titleBox.setSpacing(10);
+        facts.getChildren().add(steps);
+        facts.getChildren().add(stepsOfBestPath);
+        this.setRight(facts);
         start.setOnAction(e -> {
             startAlgo();
         });
@@ -73,10 +83,6 @@ public class BoxContainer extends BorderPane {
         this.setCenter(map);
     }
 
-    public double getInnerSize() {
-        return ApplicationBox.WIDTH ;
-    }
-
     private void startAlgo() {
         isRunning = true;
     }
@@ -85,4 +91,21 @@ public class BoxContainer extends BorderPane {
         this.isRunning = false;
         this.pointReached = pointReached;
     }
+
+    public void setSteps(int steps) {
+        this.steps.setText("Steps: " + steps);
+    }
+
+    public void setStepsOfBestPath(int steps) {
+        this.stepsOfBestPath.setText("Steps of best path: " + steps);
+    }
+
+    public void updateFacts() {
+        facts.getChildren().clear();
+        facts.getChildren().add(steps);
+        facts.getChildren().add(stepsOfBestPath);
+        setRight(facts);
+    }
+
+
 }
