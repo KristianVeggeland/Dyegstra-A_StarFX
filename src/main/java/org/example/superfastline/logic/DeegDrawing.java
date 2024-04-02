@@ -20,7 +20,7 @@ public class DeegDrawing implements Drawing {
     private HashMap<Box, List<Box>> allPaths = new HashMap<>();
     private List<Box> successfulPath = new ArrayList<>();
 
-    private int boxesVisited = 1;
+    private int boxesVisited = 0;
 
     BoxContainer boxContainer;
 
@@ -69,7 +69,6 @@ public class DeegDrawing implements Drawing {
             Box current = queue.poll();
             int x = current.getRow();
             int y = current.getCol();
-            boxesVisited++;
             // Check if we've reached the end point
             if (x == endPointX && y == endPointY) {
                 System.out.println("Reached end point: (" + x + ", " + y + ")");
@@ -87,6 +86,7 @@ public class DeegDrawing implements Drawing {
                 if (!neighbor.isVisited()) {
                     neighbor.setFill(Color.YELLOW);
                     neighbor.setVisited(true);
+                    boxesVisited++;
                     neighbor.setPrevious(current);
                     queue.add(neighbor);
                     List<Box> path = new ArrayList<>(allPaths.getOrDefault(current, new ArrayList<>()));
@@ -124,13 +124,10 @@ public class DeegDrawing implements Drawing {
         return neighbors;
     }
     private void visualizePath() {
-        int n = 0;
         // Color the boxes belonging to the successful path in green
-
         for (Box box : successfulPath) {
-            System.out.println("box: " + n +" contains: "  + box.toString());
+          //  System.out.println("box: " + n +" contains: "  + box.toString());
             box.setFill(Color.GREEN);
-            n++;
         }
     }
 
