@@ -11,7 +11,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ApplicationBox applicationBox = new ApplicationBox();
-        Scene  scene = new Scene(applicationBox, 800, 800);
+        Scene  scene = new Scene(applicationBox, 900, 820);
         stage.setResizable(false);
         stage.setTitle("Hello!");
         stage.setScene(scene);

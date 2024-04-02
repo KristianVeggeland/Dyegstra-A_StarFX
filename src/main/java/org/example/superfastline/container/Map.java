@@ -23,6 +23,7 @@ public class Map extends Pane {
         this.size = size;
         this.parent = parent;
         init();
+
     }
 
     private void init() {
@@ -34,9 +35,7 @@ public class Map extends Pane {
     }
 
     private void setInnerSize() {
-        BoxContainer boxContainer = ((BoxContainer) this.getParent());
-        if (parent == null) System.out.println("Parent is null");
-        innerS =  (double) ApplicationBox.WIDTH /size;
+        innerS =  (double) parent.getWidth() / size;
     }
 
     private int randomNumb() {
@@ -58,11 +57,11 @@ public class Map extends Pane {
              // Generate random end circle coordinates not at the edges
             int endRow, endCol;
             do {
-                endRow = random.nextInt(size-1);
-                endCol = random.nextInt(size -1);
+                endRow = random.nextInt(size - 1);
+                endCol = random.nextInt(size - 1);
                 endPosX = endRow;
                 endPosY = endCol;
-            } while ( isClosedBox(endRow, endCol) ||  (endRow > size-1 || endCol > size-1));
+            } while ( isClosedBox(endRow, endCol) ||  (endRow > size-1 || endCol > size-1) || (endRow == startRow && endCol == startCol));
             double endX = (endCol *innerS)  + innerS / 2;
             double endY = (endRow * innerS) + (innerS / 2);
 
@@ -97,7 +96,7 @@ public class Map extends Pane {
         }
 
         private boolean isClosedBox(int row , int col) {
-            if (map[col][row] instanceof ClosedBox) {
+            if (map[row][col] instanceof ClosedBox) {
                 return true;
             }
             return false;

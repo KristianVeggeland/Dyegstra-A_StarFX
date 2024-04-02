@@ -19,6 +19,8 @@ public class BoxContainer extends BorderPane {
 
     Button start = new Button("Start");
 
+
+
     private int mapSize;
 
     AlgoType algoType;
@@ -35,8 +37,8 @@ public class BoxContainer extends BorderPane {
     }
 
     private void init() {
-        this.setMinWidth(ApplicationBox.WIDTH);
-        this.setMinHeight(ApplicationBox.HEIGHT);
+        this.setWidth(750);
+        this.setHeight(750);
         HBox titleBox = new HBox();
         titleBox.getChildren().add(title);
         titleBox.getChildren().add(start);
@@ -44,7 +46,7 @@ public class BoxContainer extends BorderPane {
         this.map = new Map(mapSize, this);
         if (algoType == AlgoType.DYKSTRA) {
             title.setText("Dyekstra");
-            drawing = new DeegDrawing(this.map);
+            drawing = new DeegDrawing(this.map, this);
         } else {
             title.setText("A*");
         }
@@ -66,8 +68,7 @@ public class BoxContainer extends BorderPane {
 
     private void refresh() {
         System.out.println("Refresh");
-        drawing = new DeegDrawing(this.map);
-        this.setCenter(null);
+        flush();
         this.setCenter(map);
     }
 

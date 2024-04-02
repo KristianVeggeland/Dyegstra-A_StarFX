@@ -2,26 +2,22 @@ package org.example.superfastline.container;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.example.superfastline.logic.AlgoType;
 
 public class Landing extends VBox {
 
-
-
     static final Label typeS = new Label("Select type: ");
     static final Label size = new Label("Select size: ");
-
-
     TextField sizeField = new TextField("");
-
-    private RadioButton deegButton = new RadioButton("Dyegstra");
+    private RadioButton deegButton = new RadioButton("Dijkstra");
     private RadioButton aStarButton = new RadioButton("A*");
-
     private AlgoType algoType;
 
-    public Landing() {
+    ApplicationBox parent;
+
+    public Landing(ApplicationBox parent) {
+        this.parent = parent;
         init();
     }
 
@@ -33,11 +29,13 @@ public class Landing extends VBox {
         deegButton.setToggleGroup(algoGroup);
         aStarButton.setToggleGroup(algoGroup);
         algoGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (algoGroup.getSelectedToggle().toString() == "Dyegstra") {
-               algoType = AlgoType.DYKSTRA;
-            }
-            if (algoGroup.getSelectedToggle().toString() == "A*") {
+            RadioButton selectedButton = (RadioButton) newValue.getToggleGroup().getSelectedToggle();
+            if (selectedButton == deegButton) {
+                algoType = AlgoType.DYKSTRA;
+                System.out.println(algoType);
+            } else if (selectedButton == aStarButton) {
                 algoType = AlgoType.A_STAR;
+                System.out.println(algoType);
             }
         });
         HBox algoBox = new HBox();
@@ -57,14 +55,13 @@ public class Landing extends VBox {
 
 
     public void clean() {
-        this.getChildren().removeAll(this.getChildren());
-        init();
+        this.getChildren().clear();
     }
 
     private void onStart() {
-        ApplicationBox parent = (ApplicationBox) this.getParent();
         parent.flush();
-        parent.setCenter(new BoxContainer(algoType, Integer.parseInt(sizeField.getText())));
+        parent.setBoxContainer(new BoxContainer(algoType, Integer.parseInt(sizeField.getText())));
+        //clean();
     }
 
 }

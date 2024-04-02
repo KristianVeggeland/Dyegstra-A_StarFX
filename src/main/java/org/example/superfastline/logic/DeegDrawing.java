@@ -20,8 +20,16 @@ public class DeegDrawing implements Drawing {
     private HashMap<Box, List<Box>> allPaths = new HashMap<>();
     private List<Box> successfulPath = new ArrayList<>();
 
-    public DeegDrawing(Map map) {
+    private int boxesVisited = 1;
+
+    BoxContainer boxContainer;
+
+    public DeegDrawing(Map map, BoxContainer boxContainer) {
+
         super();
+        System.out.println("DeegDrawing constructor called");
+        if (boxContainer == null) throw new IllegalArgumentException("BoxContainer cannot be null");
+        this.boxContainer = boxContainer;
         this.map = map;
         this.mapGrid = map.getWalls();
         this.startPointX = map.getStartPosX();
@@ -33,12 +41,14 @@ public class DeegDrawing implements Drawing {
 
     @Override
     public void draw() {
+        System.out.println("Drawing Deeg's algorithm...");
         System.out.println("Starting Dijkstra's algorithm...");
         findShortestPath();
         visualizePath();
     }
 
     private void findShortestPath() {
+
         // Initialize all boxes as unvisited
         for (int i = 0; i < mapGrid.length; i++) {
             for (int j = 0; j < mapGrid[i].length; j++) {
@@ -56,16 +66,17 @@ public class DeegDrawing implements Drawing {
         allPaths.put(startBox, initialPath);
 
         while (!queue.isEmpty()) {
+            System.out.println("Queue size: " + queue.size());
             Box current = queue.poll();
             int x = current.getRow();
             int y = current.getCol();
-
+            boxesVisited++;
             // Check if we've reached the end point
             if (x == endPointX && y == endPointY) {
                 System.out.println("Reached end point: (" + x + ", " + y + ")");
                 reconstructSuccessfulPath(current);
-                BoxContainer pointReached = (BoxContainer) map.getParent();
-                pointReached.setPointReached(true);
+                System.out.println("Boxes visited: " + boxesVisited);
+                boxContainer.setPointReached(true);
                 break;
             }
 
@@ -113,8 +124,9 @@ public class DeegDrawing implements Drawing {
     private void visualizePath() {
         int n = 0;
         // Color the boxes belonging to the successful path in green
+
         for (Box box : successfulPath) {
-            System.out.println("box: " + n +" contxains: "  + box.toString());
+            System.out.println("box: " + n +" contains: "  + box.toString());
             box.setFill(Color.GREEN);
             n++;
         }
