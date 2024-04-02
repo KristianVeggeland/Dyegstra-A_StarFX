@@ -36,7 +36,6 @@ public class DeegDrawing implements Drawing {
         this.startPointY = map.getStartPosY();
         this.endPointX = map.getEndPosX();
         this.endPointY = map.getEndPosY();
-        draw();
     }
 
     @Override

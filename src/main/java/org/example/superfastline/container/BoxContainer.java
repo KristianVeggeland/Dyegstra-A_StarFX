@@ -16,13 +16,9 @@ import org.example.superfastline.logic.Drawing;
 public class BoxContainer extends BorderPane {
 
     Label title = new Label("");
-
     Button start = new Button("Start");
-
-
-
+    Button back = new Button("Return");
     private int mapSize;
-
     AlgoType algoType;
     Map map;
     Drawing drawing;
@@ -40,6 +36,9 @@ public class BoxContainer extends BorderPane {
         this.setWidth(750);
         this.setHeight(750);
         HBox titleBox = new HBox();
+        start.setOnAction(e -> {
+            startAlgo();
+        });
         titleBox.getChildren().add(title);
         titleBox.getChildren().add(start);
         this.setTop(titleBox);
@@ -52,11 +51,13 @@ public class BoxContainer extends BorderPane {
         }
         this.setCenter(map);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2.0), event -> {
-      //     if (isRunning) {
+           if (isRunning) {
+               System.out.println("Running");
+                drawing.draw();
                 if (!pointReached) {
                     refresh();
                 }
-        //   }
+           }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -76,7 +77,12 @@ public class BoxContainer extends BorderPane {
         return ApplicationBox.WIDTH ;
     }
 
+    private void startAlgo() {
+        isRunning = true;
+    }
+
     public void setPointReached(boolean pointReached) {
+        this.isRunning = false;
         this.pointReached = pointReached;
     }
 }
