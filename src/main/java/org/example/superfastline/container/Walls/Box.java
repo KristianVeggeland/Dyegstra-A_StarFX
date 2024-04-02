@@ -5,9 +5,11 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Box extends Rectangle {
     private int row,col;
-
     boolean visited = false;
     Box previous;
+    int totalCost = 0;
+
+
     public Box(double size, double posX, double posY, int row, int col) {
         super(posX, posY,size, size);
         this.row = row;

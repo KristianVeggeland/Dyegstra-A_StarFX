@@ -42,19 +42,17 @@ public class DeegDrawing implements Drawing {
     public void draw() {
         System.out.println("Drawing Deeg's algorithm...");
         System.out.println("Starting Dijkstra's algorithm...");
+        colorStartAndEndPoints();
         findShortestPath();
         visualizePath();
     }
 
+    private void colorStartAndEndPoints() {
+        mapGrid[startPointX][startPointY].setFill(Color.BLUE);
+        mapGrid[endPointX][endPointY].setFill(Color.RED);
+    }
+
     private void findShortestPath() {
-
-        // Initialize all boxes as unvisited
-        for (int i = 0; i < mapGrid.length; i++) {
-            for (int j = 0; j < mapGrid[i].length; j++) {
-                mapGrid[i][j].setVisited(false);
-            }
-        }
-
         // Initialize queue for BFS
         Queue<Box> queue = new LinkedList<>();
         Box startBox = mapGrid[startPointX][startPointY]; // Corrected order for start point

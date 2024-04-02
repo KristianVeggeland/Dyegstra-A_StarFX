@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.superfastline.logic.AlgoType;
+import org.example.superfastline.logic.AstarDrawing;
 import org.example.superfastline.logic.DeegDrawing;
 import org.example.superfastline.logic.Drawing;
 
@@ -65,6 +66,7 @@ public class BoxContainer extends BorderPane {
             drawing = new DeegDrawing(this.map, this);
         } else {
             title.setText("A*");
+            drawing = new AstarDrawing(this.map, this);
         }
         this.setCenter(map);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2.0), event -> {
