@@ -21,7 +21,6 @@ public class BFS implements Drawing {
     BoxContainer boxContainer;
 
     public BFS(Map map, BoxContainer boxContainer) {
-
         super();
         System.out.println("DeegDrawing constructor called");
         if (boxContainer == null) throw new IllegalArgumentException("BoxContainer cannot be null");
@@ -36,8 +35,6 @@ public class BFS implements Drawing {
 
     @Override
     public void draw() {
-        System.out.println("Drawing Deeg's algorithm...");
-        System.out.println("Starting Dijkstra's algorithm...");
         colorStartAndEndPoints();
         findShortestPath();
         visualizePath();
@@ -98,7 +95,6 @@ public class BFS implements Drawing {
         int x = current.getCol();
         int y = current.getRow();
 
-        // Check if the neighboring boxes are within bounds and are not walls
         if (x - 1 >= 0 && !(mapGrid[y][x - 1] instanceof ClosedBox)) {
             neighbors.add(mapGrid[y][x - 1]); // Left
         }
@@ -114,9 +110,7 @@ public class BFS implements Drawing {
         return neighbors;
     }
     private void visualizePath() {
-        // Color the boxes belonging to the successful path in green
         for (Box box : successfulPath) {
-          //  System.out.println("box: " + n +" contains: "  + box.toString());
             box.setFill(Color.GREEN);
         }
     }
