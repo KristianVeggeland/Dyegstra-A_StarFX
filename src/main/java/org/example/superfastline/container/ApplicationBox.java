@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ApplicationBox extends BorderPane {
 
-    static final Label title = new Label("Super Fast Line");
+    static final Label title = new Label(" Pathfinding ");
     static final int HEIGHT = 800;
     static final int WIDTH = 800;
 
@@ -29,7 +29,6 @@ public class ApplicationBox extends BorderPane {
         top.setMinWidth(WIDTH);
         this.setTop(top);
         this.setCenter(landing);
-        //this.setCenter(new BoxContainer(AlgoType.DYKSTRA, 50));
     }
 
     public void setBoxContainer(BoxContainer boxContainer) {

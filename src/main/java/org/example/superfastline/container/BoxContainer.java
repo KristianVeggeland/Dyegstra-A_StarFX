@@ -7,19 +7,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.superfastline.logic.AlgoType;
-import org.example.superfastline.logic.AstarDrawing;
-import org.example.superfastline.logic.DeegDrawing;
+import org.example.superfastline.logic.GreedyS;
+import org.example.superfastline.logic.BFS;
 import org.example.superfastline.logic.Drawing;
 
 public class BoxContainer extends BorderPane {
 
     Label title = new Label("");
-    Button start = new Button("Start");
-    Button back = new Button("Return");
+    Button start = new Button(" Run ");
+    Button back = new Button(" Back ");
     private int mapSize;
     AlgoType algoType;
     Map map;
@@ -27,8 +26,8 @@ public class BoxContainer extends BorderPane {
     boolean pointReached = false;
     boolean isRunning = false;
 
-    Label steps = new Label("Steps: ");
-    Label stepsOfBestPath = new Label("Steps of best path: ");
+    Label steps = new Label(" Operations: N/A");
+    Label stepsOfBestPath = new Label(" Steps of shortest path: N/A");
     VBox facts = new VBox();
 
 
@@ -61,25 +60,14 @@ public class BoxContainer extends BorderPane {
         titleBox.getChildren().add(back);
         this.setTop(titleBox);
         this.map = new Map(mapSize, this);
-        if (algoType == AlgoType.DYKSTRA) {
-            title.setText("Dyekstra");
-            drawing = new DeegDrawing(this.map, this);
+        if (algoType == AlgoType.BFS) {
+            title.setText("BFS");
+            drawing = new BFS(this.map, this);
         } else {
-            title.setText("A*");
-            drawing = new AstarDrawing(this.map, this);
+            title.setText("GREEDYSEARCH");
+            drawing = new GreedyS(this.map, this);
         }
         this.setCenter(map);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2.0), event -> {
-           if (isRunning) {
-               System.out.println("Running");
-                drawing.draw();
-                if (!pointReached) {
-                    refresh();
-                }
-           }
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
     }
 
     public void flush() {
@@ -93,7 +81,9 @@ public class BoxContainer extends BorderPane {
     }
 
     private void startAlgo() {
-        isRunning = true;
+        if (!pointReached) {
+            drawing.draw();
+        }
     }
 
     public void setPointReached(boolean pointReached) {

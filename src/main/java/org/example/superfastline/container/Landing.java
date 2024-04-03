@@ -10,9 +10,9 @@ public class Landing extends VBox {
     static final Label typeS = new Label("Select type: ");
     static final Label size = new Label("Select size: ");
     TextField sizeField = new TextField("");
-    private RadioButton deegButton = new RadioButton("Dijkstra");
-    private RadioButton aStarButton = new RadioButton("A*");
-    private AlgoType algoType = AlgoType.DYKSTRA;
+    private RadioButton deegButton = new RadioButton(" BFS ");
+    private RadioButton aStarButton = new RadioButton(" GreedySearch ");
+    private AlgoType algoType = AlgoType.BFS;
     ApplicationBox parent;
 
     public Landing(ApplicationBox parent) {
@@ -30,10 +30,10 @@ public class Landing extends VBox {
         algoGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             RadioButton selectedButton = (RadioButton) newValue.getToggleGroup().getSelectedToggle();
             if (selectedButton == deegButton) {
-                algoType = AlgoType.DYKSTRA;
+                algoType = AlgoType.BFS;
                 System.out.println(algoType);
             } else if (selectedButton == aStarButton) {
-                algoType = AlgoType.A_STAR;
+                algoType = AlgoType.GreedyS;
                 System.out.println(algoType);
             }
         });
@@ -47,7 +47,7 @@ public class Landing extends VBox {
         sizeBox.getChildren().addAll(sizeField);
         this.getChildren().add(sizeBox);
 
-        Button startButton = new Button("Start");
+        Button startButton = new Button(" Try it ");
         startButton.setOnAction(e -> onStart());
         this.getChildren().add(startButton);
     }
@@ -63,12 +63,12 @@ public class Landing extends VBox {
             sizeField.setText("give size");
             return;
         }
-        if (Integer.parseInt(sizeField.getText()) == 0) {
-            sizeField.setText("give size > 0");
-            return;
-        }
         if (sizeField.getText().matches("[a-zA-Z]+")) {
             sizeField.setText("give number");
+            return;
+        }
+        if (Integer.parseInt(sizeField.getText()) == 0) {
+            sizeField.setText("give size > 0");
             return;
         }
         parent.setBoxContainer(new BoxContainer(algoType, Integer.parseInt(sizeField.getText())));

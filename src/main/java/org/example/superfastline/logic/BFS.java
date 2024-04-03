@@ -1,16 +1,15 @@
 package org.example.superfastline.logic;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.example.superfastline.container.BoxContainer;
 import org.example.superfastline.container.Map;
 import org.example.superfastline.container.Boxes.Box;
 import org.example.superfastline.container.Boxes.ClosedBox;
-import org.example.superfastline.logic.Drawing;
 
 import java.util.*;
 
-public class AstarDrawing extends Pane implements Drawing {
+public class BFS implements Drawing {
+
     private Map map;
     private Box[][] mapGrid;
     private int startPointX, startPointY, endPointX, endPointY;
@@ -21,7 +20,10 @@ public class AstarDrawing extends Pane implements Drawing {
 
     BoxContainer boxContainer;
 
-    public AstarDrawing(Map map, BoxContainer boxContainer) {
+    public BFS(Map map, BoxContainer boxContainer) {
+
+        super();
+        System.out.println("DeegDrawing constructor called");
         if (boxContainer == null) throw new IllegalArgumentException("BoxContainer cannot be null");
         this.boxContainer = boxContainer;
         this.map = map;
@@ -34,8 +36,8 @@ public class AstarDrawing extends Pane implements Drawing {
 
     @Override
     public void draw() {
-        System.out.println("Drawing A* algorithm...");
-        System.out.println("Starting A* algorithm...");
+        System.out.println("Drawing Deeg's algorithm...");
+        System.out.println("Starting Dijkstra's algorithm...");
         colorStartAndEndPoints();
         findShortestPath();
         visualizePath();
@@ -47,41 +49,47 @@ public class AstarDrawing extends Pane implements Drawing {
     }
 
     private void findShortestPath() {
-        // Initialize priority queue for A*
-        PriorityQueue<Box> queue = new PriorityQueue<>(Comparator.comparingInt(a -> heuristic(a)));
+        Queue<Box> queue = new LinkedList<>();
         Box startBox = mapGrid[startPointX][startPointY];
+        startBox.setVisited(true);
         queue.add(startBox);
-        allPaths.put(startBox, new ArrayList<>());
+        List<Box> initialPath = new ArrayList<>();
+        initialPath.add(startBox);
+        allPaths.put(startBox, initialPath);
+
         while (!queue.isEmpty()) {
+            System.out.println("Queue size: " + queue.size());
             Box current = queue.poll();
-            current.setVisited(true);
-            if (current.getRow() == endPointX && current.getCol() == endPointY) {
+            int x = current.getRow();
+            int y = current.getCol();
+            if (x == endPointX && y == endPointY) {
+                System.out.println("Reached end point: (" + x + ", " + y + ")");
                 reconstructSuccessfulPath(current);
-                //System.out.println("Boxes visited: " + boxesVisited);
                 boxContainer.setSteps(boxesVisited);
                 boxContainer.updateFacts();
                 boxContainer.setPointReached(true);
                 break;
             }
+
             List<Box> neighbors = getNeighbors(current);
             for (Box neighbor : neighbors) {
                 if (!neighbor.isVisited()) {
-                    allPaths.put(neighbor, new ArrayList<>(allPaths.get(current)));
-                    allPaths.get(neighbor).add(neighbor);
+                    neighbor.setFill(Color.YELLOW);
+                    neighbor.setVisited(true);
+                    boxesVisited++;
+                    neighbor.setPrevious(current);
                     queue.add(neighbor);
+                    List<Box> path = new ArrayList<>(allPaths.getOrDefault(current, new ArrayList<>()));
+                    path.add(neighbor);
+                    allPaths.put(neighbor, path);
                 }
             }
         }
-
-    }
-
-    private int heuristic(Box a) {
-        return Math.abs(a.getRow() - endPointX) + Math.abs(a.getCol() - endPointY);
     }
 
     private void reconstructSuccessfulPath(Box current) {
         successfulPath = allPaths.get(current);
-        boxContainer.setStepsOfBestPath(successfulPath.size() - 1);
+        boxContainer.setStepsOfBestPath(successfulPath.size());
         System.out.println("Successful path: " + successfulPath);
     }
 
@@ -105,16 +113,12 @@ public class AstarDrawing extends Pane implements Drawing {
         }
         return neighbors;
     }
-
     private void visualizePath() {
         // Color the boxes belonging to the successful path in green
         for (Box box : successfulPath) {
+          //  System.out.println("box: " + n +" contains: "  + box.toString());
             box.setFill(Color.GREEN);
         }
     }
 
-    @Override
-    public void erase() {
-        // Clear any visuals if needed
-    }
 }
