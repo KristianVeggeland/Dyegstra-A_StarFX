@@ -3,9 +3,9 @@ package org.example.superfastline.container;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import org.example.superfastline.container.Walls.ClosedBox;
-import org.example.superfastline.container.Walls.OpenBox;
-import org.example.superfastline.container.Walls.Box;
+import org.example.superfastline.container.Boxes.ClosedBox;
+import org.example.superfastline.container.Boxes.OpenBox;
+import org.example.superfastline.container.Boxes.Box;
 
 import java.util.Random;
 

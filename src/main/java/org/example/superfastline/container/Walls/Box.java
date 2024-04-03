@@ -1,4 +1,4 @@
-package org.example.superfastline.container.Walls;
+package org.example.superfastline.container.Boxes;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

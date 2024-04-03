@@ -1,4 +1,4 @@
-package org.example.superfastline.container.Walls;
+package org.example.superfastline.container.Boxes;
 
 public class ClosedBox extends Box {
     public ClosedBox(double size, double posX, double posY, int row, int col) {

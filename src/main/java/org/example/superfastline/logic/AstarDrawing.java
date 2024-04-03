@@ -4,8 +4,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.example.superfastline.container.BoxContainer;
 import org.example.superfastline.container.Map;
-import org.example.superfastline.container.Walls.Box;
-import org.example.superfastline.container.Walls.ClosedBox;
+import org.example.superfastline.container.Boxes.Box;
+import org.example.superfastline.container.Boxes.ClosedBox;
 import org.example.superfastline.logic.Drawing;
 
 import java.util.*;
