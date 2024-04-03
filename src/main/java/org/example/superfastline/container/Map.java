@@ -105,7 +105,7 @@ public class Map extends Pane {
         public Box[][] getWalls() {
             return map;
         }
-        public double getInnerSize() {
+       public double getInnerSize() {
             return innerS;
         }
 
