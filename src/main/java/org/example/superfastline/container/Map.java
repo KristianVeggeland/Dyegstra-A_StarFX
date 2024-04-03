@@ -81,7 +81,7 @@ public class Map extends Pane {
                     if (isEdge) {
                         map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS, row, col);
                     }
-                   else if (randomNumb() > 7) {
+                   else if (randomNumb() > 8) {
                         map[row][col] = new ClosedBox(innerS, row*innerS, col*innerS, row, col);
                     } else {
                         map[row][col] = new OpenBox(innerS, row*innerS, col*innerS, row, col);
