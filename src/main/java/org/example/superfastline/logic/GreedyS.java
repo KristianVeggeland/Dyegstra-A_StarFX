@@ -33,8 +33,6 @@ public class GreedyS extends Pane implements Drawing {
 
     @Override
     public void draw() {
-        System.out.println("Drawing A* algorithm...");
-        System.out.println("Starting A* algorithm...");
         colorStartAndEndPoints();
         findShortestPath();
         visualizePath();
@@ -89,7 +87,6 @@ public class GreedyS extends Pane implements Drawing {
         int x = current.getCol();
         int y = current.getRow();
 
-        // Check if the neighboring boxes are within bounds and are not walls
         if (x - 1 >= 0 && !(mapGrid[y][x - 1] instanceof ClosedBox)) {
             neighbors.add(mapGrid[y][x - 1]); // Left
         }
@@ -106,7 +103,6 @@ public class GreedyS extends Pane implements Drawing {
     }
 
     private void visualizePath() {
-        // Color the boxes belonging to the successful path in green
         for (Box box : successfulPath) {
             box.setFill(Color.GREEN);
         }
